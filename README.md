@@ -30,9 +30,9 @@ Download the following ZIP ([build](https://drive.google.com/file/d/1dx8xU1aK_mh
 
 ## Project Main Components 
 
-* Attacker: A humanoid (a knight with a shield and sword) that has premade attack animations that hit the defender.
+* **Attacker:** A humanoid (a knight with a shield and sword) that has premade attack animations that hit the defender.
 
-* Defender (AI): A humanoid (a samurai with his katana) that defense himself (moving the katana and blocking the enemy blow) using the AI.
+* **Defender (AI):** A humanoid (a samurai with his katana) that defense himself (moving the katana and blocking the enemy blow) using the AI.
 
 ## Creating the Animations
 
@@ -49,11 +49,11 @@ The agent in this training environment can move and rotate the sword as if the s
 
 As for his observations, from the environment, the agent will know the following.
 
-3D Position and rotation: 
+**3D Position and rotation:** 
 * Both swords
 * Full body of the samurai divided in Head, Spine, Left and Right Arm, Hip, and Left and Right Leg
 
-Velocity:
+**Velocity:**
 * Both swords
 
 The next image shows how it is represented in Unity.
@@ -64,7 +64,36 @@ The next image shows how it is represented in Unity.
 
 All the configuration data (reinforce algorithm used, ANN settings and hyperparameters, etc) is listed in the next image.
 
-![YAML_Config](https://user-images.githubusercontent.com/62213937/178032912-43c2ba27-f44b-4664-bea0-32b20c75b1ae.PNG)
+```YAML
+behaviors:
+  DefendSamurai:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 512
+      buffer_size: 12000
+      learning_rate: 0.0003
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: true
+      hidden_units: 512
+      num_layers: 3
+      vis_encode_type: simple
+      memory: null
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    init_path: null
+    keep_checkpoints: 5
+    checkpoint_interval: 500000
+    max_steps: 30000000
+    time_horizon: 1000
+    summary_freq: 50000
+```
 
 See [Training Configuration File](https://github.com/Unity-Technologies/ml-agents/blob/release_19_docs/docs/Training-Configuration-File.md) in order to understand the previous image.
 
@@ -81,16 +110,10 @@ See [Training Configuration File](https://github.com/Unity-Technologies/ml-agent
 ### Installing
 * Download the project and add it to Unity Hub.
 
-## License
-
-This project is licensed under the MIT License - see the `LICENSE.md` file for details
-
 ## Acknowledgments
-Third partie resources:
+Third party resources:
 * [Samurai and katana model](https://sketchfab.com/3d-models/samurai-0ac619b7b276445cb69c1887dd21ede9)
 * [Knight model and attack animations](https://www.mixamo.com)
 * [Tatami structure](https://sketchfab.com/3d-models/flying-island-low-poly-8780067653804460a0c792c91ed2bbf5)
 * [Japanes leaf](https://www.textures.com/download/image/29264)
 * [Skybox](https://assetstore.unity.com/packages/2d/textures-materials/sky/skybox-series-free-103633)
-
-
